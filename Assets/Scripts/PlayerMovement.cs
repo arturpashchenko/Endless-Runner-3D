@@ -1,18 +1,132 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerMovement : MonoBehaviour
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+namespace PlayerMovement
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum CurrentSide { right, middle, left }
+    public enum MoveSide {r,m,l}
+    public class PlayerMovement : MonoBehaviour
     {
-        
-    }
+        [Header("Main")]
+        [SerializeField] private Rigidbody _player;
+        [SerializeField] private Animator _animator;
+        [Space]
+        [Header("Jump")]
+        [SerializeField] private float _jumpPower;
+        [SerializeField] private float _distanceForRaycast;
+        [Space]
+        [Header("Move")]
+        [SerializeField] private float _durationForLeftOrRightDodge;
+        [SerializeField] private float _leftPosition;
+        [SerializeField] private float _midPosition;
+        [SerializeField] private float _rightPosition;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+
+
+        Vector3 _targetPosition;
+        CurrentSide _currentSide = CurrentSide.middle;
+        MoveSide _moveSide = MoveSide.m;
+        private InputManager _inputManager;
+
+        private void Awake()
+        {
+            _inputManager = new InputManager();
+            _inputManager.MainMovement.Jump.performed += Jump;
+            _inputManager.MainMovement.MoveRight.performed += MoveRight;
+            _inputManager.MainMovement.MoveLeft.performed += MoveLeft;
+
+
+        }
+
+        private void MoveLeft(InputAction.CallbackContext context)
+        {
+            _animator.Play("Left Dodge");
+            _moveSide = MoveSide.l;
+            if (_currentSide == CurrentSide.middle)
+            {
+                StartCoroutine(MovePlayer());
+                _currentSide = CurrentSide.left;
+
+            } 
+            else if (_currentSide == CurrentSide.right)
+            {
+                StartCoroutine(MovePlayer());
+                _currentSide = CurrentSide.middle;
+            }
+
+        }
+
+        private void MoveRight(InputAction.CallbackContext context)
+        {
+            _moveSide = MoveSide.r;
+            _animator.Play("Right Dodge");
+            
+            if (_currentSide == CurrentSide.middle)
+            {
+                StartCoroutine(MovePlayer());
+                _currentSide = CurrentSide.right;
+            }
+            else if (_currentSide == CurrentSide.left)
+            {
+                StartCoroutine(MovePlayer());
+                _currentSide = CurrentSide.middle;
+            }
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (Physics.Raycast(_player.transform.position, Vector3.down, _distanceForRaycast))
+            {
+                _player.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+                _animator.Play("Jump");
+            }
+
+        }
+        IEnumerator MovePlayer()
+        {
+            float elapsedTime = 0;
+            Vector3 startPosition = _player.transform.position;
+
+            if (_currentSide == CurrentSide.left && _moveSide == MoveSide.r) _targetPosition = new Vector3(_player.transform.position.x, _player.transform.position.y, _midPosition);
+
+
+            if (_currentSide == CurrentSide.middle)
+            {
+                if (_moveSide == MoveSide.r)
+                {
+                    _targetPosition = new Vector3(_player.transform.position.x, _player.transform.position.y, _rightPosition);
+                }
+                else if (_moveSide == MoveSide.l)
+                {
+                    _targetPosition = new Vector3(_player.transform.position.x, _player.transform.position.y, _leftPosition);
+                }
+            }
+
+
+            if (_currentSide == CurrentSide.right && _moveSide == MoveSide.l) _targetPosition = new Vector3(_player.transform.position.x, _player.transform.position.y, _midPosition);
+
+            while (elapsedTime < _durationForLeftOrRightDodge)
+            {
+                _player.transform.position = Vector3.Lerp(startPosition, _targetPosition, (elapsedTime / _durationForLeftOrRightDodge));
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+
+            _player.position = _targetPosition;
+
+        }
+
+        private void OnEnable()
+        {
+            _inputManager.Enable();
+        }
+        private void OnDisable()
+        {
+            _inputManager.Disable();
+        }
     }
-}
+} 
