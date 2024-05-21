@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class RoadMovement : MonoBehaviour
 {
-    [SerializeField] Rigidbody _road;
-
-    
+    [SerializeField] public float _movementSpeed;
     void Update()
     {
-        
+        transform.position += new Vector3(-_movementSpeed, 0, 0) * Time.deltaTime; 
     }
 }
