@@ -336,13 +336,7 @@ MonoBehaviour:
   - {fileID: 2472413883847757327, guid: 4afc9f803ef00ec4eae3d96d09929e25, type: 3}
   _positionToSpawn: {x: 0, y: 0, z: 0}
   _parent: {fileID: 5314574088559185209}
-  _isSpawnAllObjects: 1
   _isRandom: 1
-  _avoidSamePosition: 1
-  _firstX: 30
-  _secondX: 130
-  _ZPositions: 0600000000000000faffffff
-  _minDistance: 5
 --- !u!114 &1193944523773586180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,13 +895,7 @@ MonoBehaviour:
   - {fileID: 5314574088559185209}
   _positionToSpawn: {x: 205, y: 0, z: 0}
   _parent: {fileID: 3529059121817877639, guid: 4ba51baabbc8c984fae9c2441c14589f, type: 3}
-  _isSpawnAllObjects: 0
   _isRandom: 0
-  _avoidSamePosition: 0
-  _firstX: 0
-  _secondX: 0
-  _ZPositions: 
-  _minDistance: 5
 --- !u!114 &2447663657189211510
 MonoBehaviour:
   m_ObjectHideFlags: 0
