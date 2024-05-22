@@ -5,14 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Trigger
+  - Telepotable
+  - Environment
+  - Cars
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Trigger
   - Water
   - UI
-  - 
+  - Cars
   - 
   - 
   - 

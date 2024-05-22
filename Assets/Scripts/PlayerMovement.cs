@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 namespace PlayerMovement
@@ -21,6 +22,9 @@ namespace PlayerMovement
         [SerializeField] private float _midPosition;
         [SerializeField] private float _rightPosition;
 
+        //AnimatorStateInfo _stateInfo;
+        //private bool _isAnimationPlaying = false;
+        private bool _isDodged = false;
         Vector3 _targetPosition;
         CurrentSide _currentSide = CurrentSide.middle;
         MoveSide _moveSide = MoveSide.m;
@@ -38,38 +42,43 @@ namespace PlayerMovement
         }
         private void MoveLeft(InputAction.CallbackContext context)
         {
-           
 
-            _moveSide = MoveSide.l;
-
-            if (_currentSide == CurrentSide.middle)
+            if (!_isDodged)
             {
-                StartCoroutine(MovePlayer());
-                _currentSide = CurrentSide.left;
+                _isDodged = true;
+                _moveSide = MoveSide.l;
 
-            } 
-            else if (_currentSide == CurrentSide.right)
-            {
-                StartCoroutine(MovePlayer());
-                _currentSide = CurrentSide.middle;
+                if (_currentSide == CurrentSide.middle)
+                {
+                    StartCoroutine(MovePlayer());
+                    _currentSide = CurrentSide.left;
+
+                }
+                else if (_currentSide == CurrentSide.right)
+                {
+                    StartCoroutine(MovePlayer());
+                    _currentSide = CurrentSide.middle;
+                }
             }
-       
         }
       
         private void MoveRight(InputAction.CallbackContext context)
         {
-           
-            _moveSide = MoveSide.r;
+            if (!_isDodged)
+            {   
+                _isDodged = true;
+                _moveSide = MoveSide.r;
 
-            if (_currentSide == CurrentSide.middle)
-            {
-                StartCoroutine(MovePlayer());
-                _currentSide = CurrentSide.right;
-            }
-            else if (_currentSide == CurrentSide.left)
-            {
-                StartCoroutine(MovePlayer());
-                _currentSide = CurrentSide.middle;
+                if (_currentSide == CurrentSide.middle)
+                {
+                    StartCoroutine(MovePlayer());
+                    _currentSide = CurrentSide.right;
+                }
+                else if (_currentSide == CurrentSide.left)
+                {
+                    StartCoroutine(MovePlayer());
+                    _currentSide = CurrentSide.middle;
+                }
             }
         }
 
@@ -123,12 +132,19 @@ namespace PlayerMovement
 
 
             _player.position = _targetPosition;
-
+            _isDodged = false;
         }
         private void AnimForLeftDodge()
         {
             if (Physics.Raycast(_player.transform.position, Vector3.down, _distanceForRaycast))
             {
+                //_stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                //if (_animator.IsInTransition(0) || _stateInfo.IsTag("Dodge"))
+                //{
+                //    _isAnimationPlaying = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
+                //}
+                //if (_isAnimationPlaying) _animator.CrossFade("Dodge", 0.25f);
+
                 _animator.Play("Left Dodge");
             }
         } 
@@ -136,7 +152,14 @@ namespace PlayerMovement
         {
             if (Physics.Raycast(_player.transform.position, Vector3.down, _distanceForRaycast))
             {
-                _animator.Play("Right Dodge");
+                //_stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                //if (_animator.IsInTransition(0) || _stateInfo.IsTag("Dodge"))
+                //{
+                //    _isAnimationPlaying = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
+                //}
+                //if(_isAnimationPlaying) _animator.CrossFade("Dodge", 0.25f);
+
+                 _animator.Play("Right Dodge");
             }
         }
         private void OnEnable()
