@@ -8,6 +8,7 @@ TagManager:
   - Telepotable
   - Environment
   - Cars
+  - DeadTrigger
   layers:
   - Default
   - TransparentFX

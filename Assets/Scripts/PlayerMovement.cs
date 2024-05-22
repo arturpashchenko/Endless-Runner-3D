@@ -1,8 +1,7 @@
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-namespace PlayerMovement
+namespace PlayerMovementScripts
 {
     public enum CurrentSide { right, middle, left }
     public enum MoveSide {r,m,l}

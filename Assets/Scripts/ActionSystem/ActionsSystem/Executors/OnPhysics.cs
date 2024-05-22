@@ -14,7 +14,7 @@ namespace ActionSystem
         {
             if (_onTrigger && _state == State.Enter)
             {
-                Debug.Log("Trigger Enter виявлено");
+
                 Execute(other);
             }
         }
@@ -39,7 +39,6 @@ namespace ActionSystem
         {
             if (_onCollision && _state == State.Enter)
             {
-                Debug.Log("Collision Enter виявлено");
                 Execute(collision);
             }
         }
