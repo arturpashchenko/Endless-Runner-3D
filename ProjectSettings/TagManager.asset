@@ -9,6 +9,7 @@ TagManager:
   - Environment
   - Cars
   - DeadTrigger
+  - Coin
   layers:
   - Default
   - TransparentFX

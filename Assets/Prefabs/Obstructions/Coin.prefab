@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 102598402500007367}
   m_Layer: 0
   m_Name: Coin
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
     m_Bits: 0
   _tag: Player
   _maskAndTag: 0
+  _targetObject: {fileID: 0}
 --- !u!114 &8742996580959925032
 MonoBehaviour:
   m_ObjectHideFlags: 0

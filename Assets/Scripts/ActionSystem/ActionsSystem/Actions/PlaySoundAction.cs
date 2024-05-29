@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 namespace ActionSystem {
     public class PlaySoundAction : ActionBase
     {
@@ -13,6 +13,7 @@ namespace ActionSystem {
             if (_withoutAudioSource) 
             {
                 AudioSource.PlayClipAtPoint(_clip,transform.position,_volume);
+
             }
             else
            _sound.Play();

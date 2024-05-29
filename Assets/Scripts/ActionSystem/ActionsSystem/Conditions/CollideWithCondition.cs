@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace ActionSystem
 {
     public class CollideWithCondition : ConditionBase
@@ -6,23 +7,25 @@ namespace ActionSystem
         [SerializeField] LayerMask _mask;
         [SerializeField] private string _tag;
         [SerializeField] private bool _maskAndTag;
+        [SerializeField] private GameObject _targetObject; 
+
         public override bool Check(object data = null)
         {
+            GameObject target = _targetObject != null ? _targetObject : gameObject;
+
             if (data == null)
             {
                 return false;
             }
             else if (data is Collider collider)
             {
-                
                 bool resultOfMask = _mask == (_mask | (1 << collider.gameObject.layer));
                 bool resulOfTag = _tag == collider.gameObject.tag;
 
                 if (_maskAndTag)
-                return resultOfMask && resulOfTag;
-
+                    return resultOfMask && resulOfTag;
                 else
-                return resultOfMask || resulOfTag;
+                    return resultOfMask || resulOfTag;
             }
             else if (data is Collision collision)
             {
@@ -30,10 +33,9 @@ namespace ActionSystem
                 bool resulOfTag = _tag == collision.gameObject.tag;
 
                 if (_maskAndTag)
-                return resultOfMask && resulOfTag;
-
+                    return resultOfMask && resulOfTag;
                 else
-                return resultOfMask || resulOfTag;
+                    return resultOfMask || resulOfTag;
             }
             return false;
         }
